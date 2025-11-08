@@ -1,0 +1,18 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  fill="none"
+>
+  <path
+    d="M3 30L61 3L34 61L29 37L3 30Z"
+    stroke="black"
+    stroke-width="2"
+    fill="white"
+  />
+  <path
+    d="M29 37L61 3L34 61"
+    stroke="black"
+    stroke-width="1.5"
+    fill="none"
+  />
+</svg>
