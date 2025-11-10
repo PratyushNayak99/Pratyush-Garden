@@ -4,7 +4,7 @@ title: My First Shot Film
 date: 11-9-2025
 tags: ["writing", "art", "creativity"]
 description: Hey Guys This is going to be my First Blog...
-coverImage: https://images.unsplash.com/photo-1688619240296-c54ddf79605f?w=1080
+coverImage: https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=859
 ---
 
 # My First Shot Film
