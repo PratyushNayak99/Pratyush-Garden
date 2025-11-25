@@ -1,6 +1,6 @@
 ---
 id: firstblog
-title: My Firt Blog
+title: My First Blog
 date: 11-8-2025
 tags: ["writing", "digital", "creativity"]
 description: Hey Guys This is going to be my First Blog...

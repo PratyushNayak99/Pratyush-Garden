@@ -52,7 +52,16 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
+  safelist: [
+  {
+    pattern: /(bg|dark:bg)-(yellow|red|blue|green|purple|pink)-(300|600)/,
+  },
+],
+
+  
 }
 
 export default config

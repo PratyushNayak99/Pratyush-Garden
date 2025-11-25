@@ -12,4 +12,5 @@ export function getAllPhotos(): Photo[] {
     const json = fs.readFileSync(filePath, "utf8")
     return JSON.parse(json) as Photo
   })
+  
 }

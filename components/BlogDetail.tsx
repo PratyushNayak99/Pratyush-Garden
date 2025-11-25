@@ -5,9 +5,37 @@ import Link from "next/link"
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react"
 import { motion } from "framer-motion" 
 import type React from "react"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+import rehypeRaw from "rehype-raw"
+
 // import { getAllBlogs } from "@/lib/getBlogs" // REMOVED
 
 // const blogs = getAllBlogs() // REMOVED
+function processHighlights(text: string): string {
+  const colors: Record<string, string> = {
+    yellow: "bg-yellow-300 dark:bg-yellow-600/50",
+    red: "bg-red-300 dark:bg-red-600/50",
+    blue: "bg-blue-300 dark:bg-blue-600/50",
+    green: "bg-green-300 dark:bg-green-600/50",
+    purple: "bg-purple-300 dark:bg-purple-600/50",
+    pink: "bg-pink-300 dark:bg-pink-600/50",
+  };
+
+  // ==color:WORD==
+  text = text.replace(/==(\w+?):(.*?)==/g, (_match: string, color: string, word: string) => {
+    const bg = colors[color] || colors.yellow;
+    return `<span class="px-1 rounded ${bg}">${word}</span>`;
+  });
+
+  // ==WORD==
+  text = text.replace(/==(.*?)==/g, (_match: string, word: string) => {
+    return `<span class="px-1 rounded ${colors.yellow}">${word}</span>`;
+  });
+
+  return text;
+}
+
 
 
 export default function BlogDetail({ blog }: { blog: any }) {
@@ -162,7 +190,10 @@ export default function BlogDetail({ blog }: { blog: any }) {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="prose prose-lg dark:prose-invert max-w-none"
         >
-          {renderContent(blog.content)}
+        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+   {processHighlights(blog.content)}
+
+</ReactMarkdown>
         </motion.article>
 
         <motion.div

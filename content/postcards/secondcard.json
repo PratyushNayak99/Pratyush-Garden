@@ -1,0 +1,10 @@
+{
+  "id": "secondcard",
+  "title": "A thought from Blog",
+  "date": "11-23-2025",
+  "tags": ["blog"],
+  "mood": "contemplative",
+  "type": "postcard",
+  "content": "When you are at your lowest just remember there are people who are facing worst conditions than you,so just thank god for whatever you have and try to move on",
+  "color": "bg-amber-50 dark:bg-amber-900/20"
+}
