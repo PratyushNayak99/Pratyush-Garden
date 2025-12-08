@@ -3,6 +3,7 @@ import { getAllBlogs } from "@/lib/getBlogs"
 import { getAllPostcards } from "@/lib/getPostcards"
 import { getAllPhotos } from "@/lib/getPhotos"
 
+export const revalidate = 20; 
 export default async function Home() {
   // ADD 'await' to resolve the Promise into actual data
   const blogs = await getAllBlogs() 

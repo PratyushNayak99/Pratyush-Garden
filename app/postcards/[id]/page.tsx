@@ -2,7 +2,7 @@ import PostcardDetail from "@/components/PostcardDetail"
 import { getAllPostcards } from "@/lib/getPostcards"
 import { notFound } from "next/navigation"
 
-export const revalidate = 60;
+export const revalidate = 20;
 
 async function getPostcard(id: string) {
   // ADDED await
