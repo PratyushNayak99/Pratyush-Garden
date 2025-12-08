@@ -1,7 +1,7 @@
 import Postcards from "@/components/Postcards"
 import { getAllPostcards } from "@/lib/getPostcards"
 
-export const revalidate = 20; // Refresh data every 60s
+export const revalidate = 5; // Refresh data every 60s
 
 export default async function PostcardsPage() {
   // ADDED await

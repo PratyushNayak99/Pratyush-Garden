@@ -2,7 +2,7 @@ import BlogDetail from "@/components/BlogDetail"
 import { getAllBlogs } from "@/lib/getBlogs"
 import { notFound } from "next/navigation"
 
-export const revalidate = 20;
+export const revalidate =5;
 
 // CHANGED: Helper function must be async now
 async function getBlog(id: string) {
