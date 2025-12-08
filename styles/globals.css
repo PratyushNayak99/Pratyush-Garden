@@ -123,3 +123,12 @@
     @apply bg-background text-foreground;
   }
 }
+.prose blockquote .highlighted-text {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+/* DISABLE TAILWIND TYPOGRAPHY AUTO QUOTES */
+.prose blockquote > p:first-of-type::before,
+.prose blockquote > p:first-of-type::after {
+  content: none !important;
+}

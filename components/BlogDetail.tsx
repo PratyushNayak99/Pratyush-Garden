@@ -1,6 +1,6 @@
 "use client"
 
-// import { useParams } from "next/navigation" // REMOVED
+// import { useParams } from "next/navigation" // REMOVED // remember this 
 import Link from "next/link"
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react"
 import { motion } from "framer-motion" 
@@ -8,8 +8,23 @@ import type React from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import rehypeRaw from "rehype-raw"
+import { useToast } from "@/components/ui/use-toast";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 // import { getAllBlogs } from "@/lib/getBlogs" // REMOVED
+const handleShare = () => {
+  const link = window.location.href;
+  navigator.clipboard.writeText(link)
+    .then(() => {
+      alert("Link copied to clipboard!");
+    })
+    .catch(() => {
+      alert("Failed to copy link");
+    });
+};
+// share logic ....
+
 
 // const blogs = getAllBlogs() // REMOVED
 function processHighlights(text: string): string {
@@ -112,8 +127,39 @@ export default function BlogDetail({ blog }: { blog: any }) {
 
     return elements
   }
+const { toast } = useToast();
+
+const handleShare = async () => {
+  const url = window.location.href;
+
+  // 📱 Mobile Web Share API
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: blog.title,
+        text: blog.description,
+        url,
+      });
+      return;
+    } catch (err) {
+      console.log("Share cancelled", err);
+    }
+  }
+
+  // 💻 Desktop – copy to clipboard fallback
+  navigator.clipboard.writeText(url).then(() => {
+    toast({
+      title: "Link copied!",
+      description: "Share it with anyone.",
+    });
+  });
+};
+
+
+
 
   return (
+    
     <div className="min-h-screen">
       {blog.coverImage && (
         <div className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden bg-gray-900">
@@ -178,10 +224,28 @@ export default function BlogDetail({ blog }: { blog: any }) {
             <Clock className="w-4 h-4" />
             <span>{getReadingTime(blog.content)}</span>
           </div>
-          <button className="ml-auto flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
-            <Share2 className="w-4 h-4" />
-            <span className="hidden md:inline">Share</span>
-          </button>
+          <TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <motion.button
+        whileTap={{ scale: 0.9, rotate: -10 }}
+        onClick={handleShare}
+        className="ml-auto flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 
+        hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+      >
+        <Share2 className="w-4 h-4" />
+        <span className="hidden md:inline">Share</span>
+      </motion.button>
+    </TooltipTrigger>
+
+    {/* Floating tooltip on hover */}
+    <TooltipContent className="text-sm">
+      Tap to copy — right-click to share
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+
+
         </motion.div>
 
         <motion.article
@@ -190,10 +254,21 @@ export default function BlogDetail({ blog }: { blog: any }) {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="prose prose-lg dark:prose-invert max-w-none"
         >
-        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-   {processHighlights(blog.content)}
-
+<ReactMarkdown
+  remarkPlugins={[remarkGfm]}
+  rehypePlugins={[rehypeRaw]}
+  components={{
+    blockquote: ({children}) => (
+      <blockquote className="border-l-2 pl-4 ml-0">
+        {children}
+      </blockquote>
+    )
+  }}
+>
+  {processHighlights(blog.content)}
 </ReactMarkdown>
+
+
         </motion.article>
 
         <motion.div

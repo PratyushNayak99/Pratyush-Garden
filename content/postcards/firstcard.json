@@ -6,5 +6,6 @@
   "mood": "contemplative",
   "type": "postcard",
   "content": "This is my first postcard. It will contain my thoughts for now I dont have anything to share but a lot excited to share in future",
-  "color": "bg-green-100 dark:bg-green-900/30"
+  "color": "bg-green-100 dark:bg-green-900/30",
+  "author":"Pratyush Nayak"
 }

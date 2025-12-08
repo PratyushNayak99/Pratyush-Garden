@@ -1,17 +1,30 @@
 import PostcardDetail from "@/components/PostcardDetail"
 import { getAllPostcards } from "@/lib/getPostcards"
+import { notFound } from "next/navigation"
 
-// 1. Make your data-fetching function async
+export const revalidate = 60;
+
 async function getPostcard(id: string) {
-  const postcards = getAllPostcards() // This is fine
+  // ADDED await
+  const postcards = await getAllPostcards()
+  
   const postcardIndex = postcards.findIndex((p) => p.id === id)
   const postcard = postcards.find((p) => p.id === id)
+  
   return { postcard, postcardIndex }
 }
 
-export default async function PostcardDetailPage({ params }: { params: { id: string } }) {
-  // 2. Await the function that uses params.id
-  const { postcard, postcardIndex } = await getPostcard(params.id)
+// Optional: Generate static paths
+export async function generateStaticParams() {
+  const postcards = await getAllPostcards()
+  return postcards.map((p) => ({ id: p.id }))
+}
+
+export default async function PostcardDetailPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params
+  const { postcard, postcardIndex } = await getPostcard(id)
+
+  if (!postcard) return notFound()
 
   return <PostcardDetail postcard={postcard} postcardIndex={postcardIndex} />
 }

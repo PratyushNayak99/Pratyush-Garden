@@ -10,6 +10,8 @@ coverImage: /images/blogs/oldman.png
 
 # An Old man who reminded me of something about Life…
 
+>hello
+
 So recently I had to go through too many exams.
 
 Some went bad, some went okay—and being far away from home only made everything feel heavier.
@@ -36,8 +38,9 @@ I don’t know the full story of the OLD MAN, but I know he was struggling in hi
 
 And then I realized something that
 
-> ==yellow: “I do have problems, but those problems might be nothing for the person next to me.” ==
-> 
+
+>I do have problems, but those problems might be nothing for the person next to me.
+
 
 That old man didn’t speak to me.
 
@@ -49,8 +52,7 @@ But just by walking ahead of me, He made me feel thankful to God.
 
 After some time I increased my pace. He noticed we both looked at each other, and his phone rang, and I crossed him, hoping that the old man will reach safely to his destination.
 
-> ==yellow:So friends, always have gratitude for good people, good moments, and everything you have.==
-> 
+>==yellow:So friends, always have gratitude for good people, good moments, and everything you have.==
 
 I hope you will like this blog; I tried my best, and I will improve in the future. 
 

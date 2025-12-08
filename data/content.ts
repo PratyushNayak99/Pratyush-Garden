@@ -7,6 +7,7 @@ export interface Postcard {
   type: string
   content: string
   color: string
+  author: string
 }
 
 export interface Blog {
