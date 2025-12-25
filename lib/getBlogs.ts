@@ -49,6 +49,8 @@ async function getNotionBlogs(): Promise<Blog[]> {
 
         const mdBlocks = await n2m.pageToMarkdown(page.id);
         const mdString = n2m.toMarkdownString(mdBlocks);
+        const series = props.series?.select?.name || null;
+        const part = props.part?.number || null;
 
         return {
           id: slug,
@@ -60,6 +62,8 @@ async function getNotionBlogs(): Promise<Blog[]> {
           coverImage,
           content: mdString.parent,
           source: "notion",
+          series, // Add this
+          part,
         } as Blog;
       })
     );

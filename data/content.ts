@@ -18,6 +18,8 @@ export interface Blog {
   description: string
   coverImage?: string
   content: string
+  series?: string; // Optional, because not all blogs belong to a series
+  part?: number;
 }
 
 export interface Photo {
