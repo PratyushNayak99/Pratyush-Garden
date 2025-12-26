@@ -1,112 +1,106 @@
-"use client"
-
-import React, { useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-// Using VS Code Dark Plus for that premium developer look
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { Check, Copy, Terminal } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { Check, Copy, Code2 } from "lucide-react";
 
 export const CodeBlock = ({ className, children, ...props }: any) => {
-  const [isCopied, setIsCopied] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const match = /language-(\w+)/.exec(className || "");
+  const language = match ? match[1] : "text";
+  const content = String(children).replace(/\n$/, "");
 
-  // 1. Extract Language
-  const match = /language-(\w+)/.exec(className || '');
-  const language = match ? match[1] : 'text';
-  const content = String(children).replace(/\n$/, '');
-
-  // 2. Inline Code Handling (Small badges)
-  const isInline = !match && !content.includes('\n');
+  /* Inline code — refined and minimal */
+  const isInline = !match && !content.includes("\n");
   if (isInline) {
     return (
-      <code className="px-1.5 py-0.5 rounded-md bg-[#2d2d2d] text-[#ce9178] font-mono text-[0.9em] border border-[#3e3e3e]">
+      <code className="rounded-md bg-neutral-800/90 px-2 py-0.5 font-mono text-[0.88em] text-emerald-300 ring-1 ring-neutral-700/50 backdrop-blur-sm">
         {children}
       </code>
     );
   }
 
-  // 3. Copy Logic
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(content);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
+  const copy = async () => {
+    await navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
   };
 
   return (
-    // CONTAINER: Deep Dark Background (#1e1e1e) to match VS Code
-    <div className="group relative my-8 rounded-xl overflow-hidden bg-[#1e1e1e] border border-[#333333] shadow-2xl">
+    <div className="group relative my-6 overflow-hidden rounded-xl border border-neutral-800/80 bg-[#0d1117] shadow-2xl shadow-black/40 transition-all duration-300 hover:border-neutral-700/60 hover:shadow-emerald-500/5">
       
-      {/* HEADER: Dark Matte Grey */}
-      <div className="flex items-center justify-between px-4 py-3 bg-[#252526] border-b border-[#333333]">
+      {/* Ambient gradient overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-emerald-500/[0.03] via-transparent to-blue-500/[0.02]" />
+      
+      {/* Refined header bar */}
+      <div className="relative flex items-center justify-between border-b border-neutral-800/60 bg-gradient-to-r from-[#161b22] to-[#0d1117] px-5 py-2.5 backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          {/* Professional code icon badge */}
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/20 to-blue-500/20 ring-1 ring-emerald-500/30">
+            <Code2 className="h-4 w-4 text-emerald-400" />
+          </div>
+          <span className="font-mono text-xs font-medium tracking-wide text-neutral-400">
+            {language}
+          </span>
+        </div>
         
-        {/* Mac-style Dots */}
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#ff5f56]" /> 
-          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" /> 
-          <div className="w-3 h-3 rounded-full bg-[#27c93f]" /> 
-        </div>
-
-        {/* Language Label */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2 opacity-70">
-           <Terminal className="w-3.5 h-3.5 text-gray-400" />
-           <span className="text-[12px] font-bold text-gray-400 uppercase tracking-widest font-mono select-none">
-             {language}
-           </span>
-        </div>
-
-        {/* Copy Button */}
         <button
-          onClick={copyToClipboard}
-          className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${
-            isCopied 
-              ? "bg-[#27c93f]/20 text-[#27c93f]" 
-              : "hover:bg-white/10 text-gray-400 hover:text-white"
-          }`}
-          title={isCopied ? "Copied!" : "Copy code"}
+          onClick={copy}
+          className="flex h-8 items-center gap-2 rounded-lg bg-neutral-800/50 px-3 text-xs font-medium text-neutral-400 ring-1 ring-neutral-700/50 transition-all hover:bg-neutral-700/60 hover:text-white hover:ring-neutral-600"
+          title={copied ? "Copied!" : "Copy code"}
         >
-          {isCopied ? (
-            <Check className="w-4 h-4" />
+          {copied ? (
+            <>
+              <Check className="h-3.5 w-3.5 text-emerald-400" />
+              <span className="text-emerald-400">Copied</span>
+            </>
           ) : (
-            <Copy className="w-4 h-4" />
+            <>
+              <Copy className="h-3.5 w-3.5" />
+              <span>Copy</span>
+            </>
           )}
         </button>
       </div>
 
-      {/* SYNTAX HIGHLIGHTER */}
-      <div className="relative">
-        <SyntaxHighlighter
-          language={language}
-          style={vscDarkPlus}
-          PreTag="div"
-          showLineNumbers={true} // Optional: Remove if you want it cleaner
-          lineNumberStyle={{
-            minWidth: "2.5em",
-            paddingRight: "1em",
-            color: "#858585", // Subtle VS Code grey for numbers
-            textAlign: "right",
-            fontSize: "0.85em"
-          }}
-          customStyle={{
-            margin: 0,
-            padding: '1.5rem',
-            fontSize: '0.95rem', // ~15.2px (Excellent readability)
-            lineHeight: '1.7',    // Relaxed line height
-            background: 'transparent', // Important: Let container bg show
-            fontFamily: 'var(--font-mono), monospace', 
-          }}
-          codeTagProps={{
-            style: {
-              fontFamily: 'inherit',
-            }
-          }}
-          {...props}
-        >
-          {content}
-        </SyntaxHighlighter>
-      </div>
+      {/* Enhanced code display */}
+      <SyntaxHighlighter
+        language={language}
+        style={vscDarkPlus}
+        PreTag="div"
+        showLineNumbers
+        lineNumberStyle={{
+          color: "#4b5563",
+          paddingRight: "1.75em",
+          textAlign: "right",
+          fontSize: "0.875rem",
+          userSelect: "none",
+          minWidth: "3em",
+          opacity: 0.6,
+          fontWeight: 500,
+        }}
+        customStyle={{
+          margin: 0,
+          padding: "2rem 1.75rem",
+          background: "transparent",
+          fontSize: "1rem",
+          lineHeight: "1.85",
+          fontFamily:
+            '"JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+          fontFeatureSettings: '"liga" 1, "calt" 1, "zero" 1',
+          letterSpacing: "0.015em",
+          fontWeight: 450,
+        }}
+        codeTagProps={{
+          style: {
+            fontFamily: "inherit",
+            textShadow: "0 0 2px rgba(255,255,255,0.12)",
+          },
+        }}
+        {...props}
+      >
+        {content}
+      </SyntaxHighlighter>
     </div>
   );
 };
