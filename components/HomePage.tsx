@@ -15,7 +15,7 @@ const postcardColors = [
 ]
 
 export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; postcards: any[]; photos: any[] }) {
-  const recentPostcards = postcards.slice(0, 3) // Back to 3 for grid view (or 5 if you want more rows)
+  const recentPostcards = postcards.slice(0, 3)
   const latestBlogs = blogs.slice(0, 2)
   const featuredPhotos = photos.slice(0, 3)
 
@@ -106,7 +106,8 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
 
       {/* ─────────────────────────────────────────────────────────────
           RECENT POSTCARDS 
-          (Mobile: Slider | Desktop: Grid)
+          (Layout: Slider on Phone, Grid on Laptop)
+          (Design: Restored to Original)
       ───────────────────────────────────────────────────────────── */}
       <section className="mb-24">
         <div className="flex items-center justify-between mb-8 px-2">
@@ -119,40 +120,36 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
           </Link>
         </div>
 
-        {/* MAGIC CLASSES EXPLAINED:
-            - flex overflow-x-auto: Default (Mobile) behavior = Horizontal Scroll
-            - md:grid md:grid-cols-3: On Desktop (md+), switch to Grid layout
-            - md:overflow-visible: On Desktop, disable scroll hiding
-        */}
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 scrollbar-hide pt-4">
           {recentPostcards.map((postcard, index) => {
             const colorClass = postcardColors[index % postcardColors.length]
             return (
               <motion.div
                 key={(postcard as any).id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="snap-center shrink-0 md:shrink md:w-auto" // md:w-auto lets grid control width on desktop
+                className="snap-center shrink-0 md:shrink md:w-auto" // Keeps slider working
               >
                 <Link href={`/postcards/${(postcard as any).id}`}>
                   <div
-                    // w-[85vw] = Mobile Width | md:w-auto = Desktop Width
-                    className={`${colorClass} w-[85vw] md:w-auto p-6 rounded-sm border-4 border-gray-800 dark:border-gray-200 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,0.3)] dark:hover:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.15)] hover:-translate-y-2 transition-all min-h-[300px] flex flex-col cursor-pointer`}
+                    // RESTORED ORIGINAL DESIGN CLASSES:
+                    // 1. Reverted min-h to 280px
+                    // 2. Reverted hover:-translate-y-1
+                    // 3. Kept w-[85vw] md:w-auto for slider compatibility
+                    className={`${colorClass} w-[85vw] md:w-auto p-6 rounded-sm border-4 border-gray-800 dark:border-gray-200 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,0.3)] dark:hover:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.15)] hover:-translate-y-1 transition-all min-h-[280px] flex flex-col cursor-pointer`}
                     style={{
-                      // Only rotate on Desktop if you want, or keep it consistent. 
-                      // Here we keep rotation for both as it's the style.
-                      transform: `rotate(${(index % 2 === 0 ? 1 : -1) * 1.5}deg)`,
+                      // RESTORED ORIGINAL ROTATION LOGIC (index % 3):
+                      transform: `rotate(${(index % 3 === 0 ? 1 : index % 3 === 1 ? -1 : 0.5) * 1}deg)`,
                     }}
                   >
-                    <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100 line-clamp-2">{(postcard as any).title}</h3>
-                    <div className="border-t-2 border-dashed border-gray-700 dark:border-gray-300 mb-4 opacity-50"></div>
-                    <p className="text-sm text-gray-800 dark:text-gray-200 line-clamp-5 flex-1 italic leading-relaxed font-serif">
+                    <h3 className="text-xl mb-3 text-gray-900 dark:text-gray-100">{(postcard as any).title}</h3>
+                    <div className="border-t-2 border-dashed border-gray-700 dark:border-gray-300 mb-4"></div>
+                    <p className="text-sm text-gray-800 dark:text-gray-200 line-clamp-4 flex-1 italic">
                       "{(postcard as any).content}"
                     </p>
-                    <div className="border-t-2 border-gray-800 dark:border-gray-200 pt-3 mt-4 flex justify-between items-center text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-gray-200">
-                      <span>{(postcard as any).tags[0]}</span>
-                      <span>{new Date((postcard as any).date).getFullYear()}</span>
+                    <div className="border-t-2 border-gray-800 dark:border-gray-200 pt-2 mt-4 text-xs text-gray-800 dark:text-gray-200">
+                      <span className="opacity-70">Topic:</span> {(postcard as any).tags[0]}
                     </div>
                   </div>
                 </Link>
@@ -162,7 +159,7 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
         </div>
       </section>
 
-      {/* Latest Writing (Standard Grid everywhere) */}
+      {/* Latest Writing */}
       <section className="mb-24">
         <div className="flex items-center justify-between mb-8 px-2">
           <h2 className="text-2xl font-bold">Latest Writing</h2>
@@ -210,48 +207,52 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
         </div>
       </section>
 
+      {/* Featured Photography */}
       {/* ─────────────────────────────────────────────────────────────
-          FEATURED PHOTOGRAPHY 
-          (Mobile: Slider | Desktop: Grid)
+          FEATURED PHOTOGRAPHY (Updated to match reference image)
       ───────────────────────────────────────────────────────────── */}
       <section>
-        <div className="flex items-center justify-between mb-8 px-2">
-          <h2 className="text-2xl font-bold">Recent Captures</h2>
-          <Link href="/photography" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 flex items-center gap-1 group">
-            View all <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+        {/* Header Area: Title Left, Description Right */}
+        <div className="flex flex-col md:flex-row md:items-start justify-between mb-12 gap-6 md:gap-12">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            Photography
+          </h2>
+          
+          <div className="max-w-xl">
+            <p className="text-lg text-gray-600 dark:text-gray-400 font-mono leading-relaxed">
+"I just love snapping photos whenever something catches my eye. They aren't masterpieces, but they’re special to me and I’m pretty proud of how they turned out! 😅 I built this gallery just for you—so go ahead, take a look around and enjoy." </p >           
+            <Link 
+              href="/photography" 
+              className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"     
+            >
+              View full gallery <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </div>
 
-        {/* Same Logic Here:
-            Mobile: flex overflow-x-auto
-            Desktop: md:grid md:grid-cols-3
-        */}
+        {/* The Slider / Grid Container (Kept your mobile slider logic) */}
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 scrollbar-hide">
           {featuredPhotos.map((photo, index) => (
             <motion.div
               key={(photo as any).id}
-              className="snap-start shrink-0 w-[280px] md:w-auto" // Mobile fixed width, Desktop auto width
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+              className="snap-start shrink-0 w-[280px] md:w-auto"
+              initial={{ opacity: 0, y: 20 }} // Changed animation to y-axis for smoother feel
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
               <Link href="/photography">
-                <div className="relative aspect-[4/5] rounded-xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all">
+                {/* Removed rounded corners to match the sharp look in your reference, 
+                    or keep 'rounded-xl' if you prefer soft corners. 
+                    I used 'rounded-sm' for a middle ground. */}
+                <div className="relative aspect-square overflow-hidden group cursor-pointer bg-gray-100 dark:bg-gray-800">
                   <img
                     src={(photo as any).image || "/placeholder.svg"}
                     alt={(photo as any).title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 transition-opacity">
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <p className="font-medium text-lg translate-y-2 group-hover:translate-y-0 transition-transform">
-                        {(photo as any).title}
-                      </p>
-                      <p className="text-xs text-white/70 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                        View Photo
-                      </p>
-                    </div>
-                  </div>
+                  
+                  {/* Optional: Simple overlay on hover */}
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </Link>
             </motion.div>
