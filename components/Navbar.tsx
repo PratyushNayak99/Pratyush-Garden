@@ -23,13 +23,16 @@ export default function Navbar() {
   ]
 
   return (
+    // Added 'backdrop-blur-md' and transparent background so your geometric pattern shows through
     <header className="sticky top-0 z-50 bg-gray-50/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
       <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="group">
-          <span className="italic font-semibold">Pratyush Nayak</span>
+          <span className="italic font-semibold text-lg">Pratyush Nayak</span>
         </Link>
 
-        <div className="flex items-center gap-6 md:gap-8">
+        {/* --- CHANGE IS HERE --- */}
+        {/* Added 'hidden md:flex': This hides everything inside this div on mobile */}
+        <div className="hidden md:flex items-center gap-6 md:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.path}
