@@ -20,37 +20,47 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
   const featuredPhotos = photos.slice(0, 3)
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12 md:py-20 overflow-x-hidden">
+    <div className="max-w-6xl mx-auto px-6 py-12 md:pt-8 md:pb-20 overflow-x-hidden">
+      
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-24 md:mb-32 flex flex-col md:flex-row items-center justify-between gap-12"
+        className="mb-24 md:mb-32 block md:flex md:flex-row items-center justify-between gap-12"
       >
         {/* Left Text Section */}
-        <div className="max-w-3xl flex-1">
-          <h1 className="text-4xl md:text-6xl mb-8 leading-tight font-normal">
-            Hey 👋 I'm <span className="italic">Pratyush Nayak</span>, working at the intersection of{" "}
-            <span className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-lg">
-              <Code2 className="w-6 h-6 md:w-8 md:h-8 text-blue-600 dark:text-blue-400" />
+        <div className="w-full md:max-w-3xl md:flex-1">
+          
+          {/* HEADING: Big and Bold (Matches the top part of your image) */}
+          <h1 className="text-5xl sm:text-6xl md:text-6xl mb-10 leading-[1.15] font-normal text-left tracking-tight text-gray-900 dark:text-gray-100">
+            Hey 👋 I'm <span className="italic font-medium">Pratyush Nayak</span>, working at the intersection of{" "}
+            
+            <span className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-lg align-baseline my-1 mx-1">
+              <Code2 className="w-8 h-8 md:w-8 md:h-8 text-blue-600 dark:text-blue-400" />
               code
             </span>
             ,{" "}
-            <span className="inline-flex items-center gap-2 bg-rose-100 dark:bg-rose-900/30 px-3 py-1 rounded-lg">
-              <Palette className="w-6 h-6 md:w-8 md:h-8 text-rose-600 dark:text-rose-400" />
+            <span className="inline-flex items-center gap-2 bg-rose-100 dark:bg-rose-900/30 px-3 py-1 rounded-lg align-baseline my-1 mx-1">
+              <Palette className="w-8 h-8 md:w-8 md:h-8 text-rose-600 dark:text-rose-400" />
               design
             </span>{" "}
             and{" "}
-            <span className="inline-flex items-center gap-2 bg-purple-100 dark:bg-purple-900/30 px-3 py-1 rounded-lg">
-              <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-purple-600 dark:text-purple-400" />
+            <span className="inline-flex items-center gap-2 bg-purple-100 dark:bg-purple-900/30 px-3 py-1 rounded-lg align-baseline my-1 mx-1">
+              <Sparkles className="w-8 h-8 md:w-8 md:h-8 text-purple-600 dark:text-purple-400" />
               philosophy
             </span>
             .
           </h1>
 
-          <div className="max-w-2xl bg-white dark:bg-gray-800/50 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 backdrop-blur-sm">
-            <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          {/* ⭐ DESCRIPTION BOX (Matches the bottom part of your image) ⭐
+              - max-w-lg: Restricts width so it doesn't stretch too far
+              - p-6: Comfortable padding
+              - text-sm: Small, neat text
+              - leading-7: Relaxed line height for readability
+          */}
+          <div className="max-w-lg bg-white dark:bg-gray-800/40 p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm backdrop-blur-sm">
+            <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-7 font-normal">
               This personal website is my own little space on the internet where I want to share my work,
               interests and passions with others, without having to please the algorithms of social media
               platforms or follow any other rules. I hope you enjoy exploring my digital living room.
@@ -58,9 +68,9 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
           </div>
         </div>
 
-        {/* Right Animation Section */}
-        <div className="flex-1 flex items-start justify-center w-full md:w-auto">
-          <div className="-mt-16">
+        {/* Right Animation Section - HIDDEN ON MOBILE (To match image) */}
+        <div className="hidden md:block flex-1 w-full md:w-auto">
+          <div className="-mt-16 flex items-start justify-center">
             <PlaneAnimation />
           </div>
         </div>
@@ -104,11 +114,7 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────────────────────
-          RECENT POSTCARDS 
-          (Layout: Slider on Phone, Grid on Laptop)
-          (Design: Restored to Original)
-      ───────────────────────────────────────────────────────────── */}
+      {/* Recent Postcards */}
       <section className="mb-24">
         <div className="flex items-center justify-between mb-8 px-2">
           <h2 className="text-2xl font-bold">Recent Postcards</h2>
@@ -129,17 +135,12 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="snap-center shrink-0 md:shrink md:w-auto" // Keeps slider working
+                className="snap-center shrink-0 md:shrink md:w-auto"
               >
                 <Link href={`/postcards/${(postcard as any).id}`}>
                   <div
-                    // RESTORED ORIGINAL DESIGN CLASSES:
-                    // 1. Reverted min-h to 280px
-                    // 2. Reverted hover:-translate-y-1
-                    // 3. Kept w-[85vw] md:w-auto for slider compatibility
                     className={`${colorClass} w-[85vw] md:w-auto p-6 rounded-sm border-4 border-gray-800 dark:border-gray-200 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.15)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,0.3)] dark:hover:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.15)] hover:-translate-y-1 transition-all min-h-[280px] flex flex-col cursor-pointer`}
                     style={{
-                      // RESTORED ORIGINAL ROTATION LOGIC (index % 3):
                       transform: `rotate(${(index % 3 === 0 ? 1 : index % 3 === 1 ? -1 : 0.5) * 1}deg)`,
                     }}
                   >
@@ -208,11 +209,7 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
       </section>
 
       {/* Featured Photography */}
-      {/* ─────────────────────────────────────────────────────────────
-          FEATURED PHOTOGRAPHY (Updated to match reference image)
-      ───────────────────────────────────────────────────────────── */}
       <section>
-        {/* Header Area: Title Left, Description Right */}
         <div className="flex flex-col md:flex-row md:items-start justify-between mb-12 gap-6 md:gap-12">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
             Photography
@@ -220,7 +217,8 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
           
           <div className="max-w-xl">
             <p className="text-lg text-gray-600 dark:text-gray-400 font-mono leading-relaxed">
-"I just love snapping photos whenever something catches my eye. They aren't masterpieces, but they’re special to me and I’m pretty proud of how they turned out! 😅 I built this gallery just for you—so go ahead, take a look around and enjoy." </p >           
+              "I just love snapping photos whenever something catches my eye. They aren't masterpieces, but they’re special to me and I’m pretty proud of how they turned out! 😅 I built this gallery just for you—so go ahead, take a look around and enjoy."
+            </p>
             <Link 
               href="/photography" 
               className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"     
@@ -230,28 +228,22 @@ export default function HomePage({ blogs, postcards, photos }: { blogs: any[]; p
           </div>
         </div>
 
-        {/* The Slider / Grid Container (Kept your mobile slider logic) */}
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 scrollbar-hide">
           {featuredPhotos.map((photo, index) => (
             <motion.div
               key={(photo as any).id}
               className="snap-start shrink-0 w-[280px] md:w-auto"
-              initial={{ opacity: 0, y: 20 }} // Changed animation to y-axis for smoother feel
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
               <Link href="/photography">
-                {/* Removed rounded corners to match the sharp look in your reference, 
-                    or keep 'rounded-xl' if you prefer soft corners. 
-                    I used 'rounded-sm' for a middle ground. */}
                 <div className="relative aspect-square overflow-hidden group cursor-pointer bg-gray-100 dark:bg-gray-800">
                   <img
                     src={(photo as any).image || "/placeholder.svg"}
                     alt={(photo as any).title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                   />
-                  
-                  {/* Optional: Simple overlay on hover */}
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </Link>
