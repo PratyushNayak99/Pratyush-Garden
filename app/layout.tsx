@@ -10,8 +10,11 @@ const geistMono = Geist_Mono({ subsets: ["latin"] })
 export const metadata = {
   title: "Pratyush Nayak - Digital Garden",
   description: "A personal digital garden with postcards, blogs, and photography",
-    generator: 'v0.app'
-}
+  generator: "v0.app",
+  verification: {
+    google: "qANebXM5U5W7qg05kuCAaBBkSDKfM72t4G56p2uiqCU",
+  },
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
