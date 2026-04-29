@@ -14,11 +14,17 @@ export const metadata = {
   verification: {
     google: "qANebXM5U5W7qg05kuCAaBBkSDKfM72t4G56p2uiqCU",
   },
-};
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="qANebXM5U5W7qg05kuCAaBBkSDKfM72t4G56p2uiqCU"
+        />
+      </head>
       <body className={`${geistSans.className} antialiased`}>
         <ClientLayout>{children}</ClientLayout>
         <Analytics />
